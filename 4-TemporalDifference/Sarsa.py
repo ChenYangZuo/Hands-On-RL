@@ -9,7 +9,7 @@ import numpy as np
 from tqdm import tqdm
 
 
-class CliffWalkEnv:
+class CliffWalkingEnv:
     def __init__(self, ncol, nrow):
         self.nrow = nrow
         self.ncol = ncol
@@ -39,14 +39,15 @@ class CliffWalkEnv:
 
 class Sarsa:
     def __init__(self, ncol, nrow, epsilon, alpha, gamma, n_action=4):
-        self.Q_table = np.zeros([nrow * ncol, n_action])
+        self.Q_table = np.zeros([nrow * ncol, n_action])  # 48行 4列
         self.n_action = n_action
         self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
 
+    # epsilon-贪婪算法
     def take_action(self, state):
-        if np.random.rand() < self.epsilon:
+        if np.random.random() < self.epsilon:
             action = np.random.randint(self.n_action)
         else:
             action = np.argmax(self.Q_table[state])
@@ -56,7 +57,7 @@ class Sarsa:
         Q_max = np.max(self.Q_table[state])
         a = [0 for _ in range(self.n_action)]
         for i in range(self.n_action):
-            if self.Q_table[state, i] == Q_max:
+            if self.Q_table[state, i] == Q_max:  # 若两个动作的价值一样，都会记录下来
                 a[i] = 1
         return a
 
@@ -81,9 +82,10 @@ def print_agent(agent, env, action_meaning, disaster=[], end=[]):
                 print(pi_str, end=" ")
         print()
 
+
 ncol = 12
 nrow = 4
-env = CliffWalkEnv(ncol, nrow)
+env = CliffWalkingEnv(ncol, nrow)
 np.random.seed(0)
 epsilon = 0.1
 alpha = 0.1
@@ -92,7 +94,7 @@ agent = Sarsa(ncol, nrow, epsilon, alpha, gamma)
 num_episodes = 500
 
 return_list = []
-for i in range(10):
+for i in range(10):  # 显示10个进度条
     with tqdm(total=int(num_episodes / 10), desc="Iteration %d" % i) as pbar:
         for i_episode in range(int(num_episodes / 10)):
             episode_return = 0

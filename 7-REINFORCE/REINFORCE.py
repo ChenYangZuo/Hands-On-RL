@@ -55,12 +55,12 @@ class REINFORCE:
             loss.backward()
         self.optimizer.step()
 
+
 learning_rate = 1e-3
 num_episodes = 1000
 hidden_dim = 128
 gamma = 0.98
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device(
-    "cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 env_name = "CartPole-v0"
 env = gym.make(env_name)
@@ -68,8 +68,7 @@ env.seed(0)
 torch.manual_seed(0)
 state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.n
-agent = REINFORCE(state_dim, hidden_dim, action_dim, learning_rate, gamma,
-                  device)
+agent = REINFORCE(state_dim, hidden_dim, action_dim, learning_rate, gamma, device)
 
 return_list = []
 for i in range(10):
@@ -99,10 +98,8 @@ for i in range(10):
             agent.update(transition_dict)
             if (i_episode + 1) % 10 == 0:
                 pbar.set_postfix({
-                    'episode':
-                    '%d' % (num_episodes / 10 * i + i_episode + 1),
-                    'return':
-                    '%.3f' % np.mean(return_list[-10:])
+                    'episode': '%d' % (num_episodes / 10 * i + i_episode + 1),
+                    'return': '%.3f' % np.mean(return_list[-10:])
                 })
             pbar.update(1)
 

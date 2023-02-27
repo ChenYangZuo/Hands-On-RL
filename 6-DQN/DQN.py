@@ -16,7 +16,7 @@ import rl_utils
 
 
 class ReplayBuffer:
-    ''' 经验回放池 '''
+    """ 经验回放池 """
 
     def __init__(self, capacity):
         self.buffer = collections.deque(maxlen=capacity)  # 队列,先进先出
@@ -58,7 +58,7 @@ class DQN:
         self.epsilon = epsilon  # epsilon-贪婪策略
         self.target_update = target_update  # 目标网络更新频率
         self.count = 0  # 计数器,记录更新次数
-        self.device = device
+        self.device = device  # 目标设备
 
     def take_action(self, state):  # epsilon-贪婪策略采取动作
         if np.random.random() < self.epsilon:
@@ -84,7 +84,7 @@ class DQN:
         self.optimizer.step()
 
         if self.count % self.target_update == 0:
-            self.target_q_net.load_state_dict(self.q_net.state_dict())  # 更新目标网络
+            self.target_q_net.load_state_dict(self.q_net.state_dict())  # 使用Q网络更新目标网络
         self.count += 1
 
 
